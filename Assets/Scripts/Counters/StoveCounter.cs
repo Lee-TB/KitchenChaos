@@ -90,6 +90,18 @@ public class StoveCounter : BaseCounter, IHasProgress
             if (player.HasKitchenObject())
             {
                 // Player is carry something
+                if (player.GetKitchenObject() is PlateKitchenObject plateKitchenObject)
+                {
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObject().DestroySelf();
+                        SetState(State.Idle);
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs()
+                        {
+                            progressNormalized = 0f
+                        });
+                    }
+                }
             }
             else
             {
