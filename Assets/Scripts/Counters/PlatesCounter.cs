@@ -16,11 +16,11 @@ public class PlatesCounter : BaseCounter
 
     private void Update()
     {
-        spawnPlateTimer += Time.deltaTime;
-        if(spawnPlateTimer > spawnPlateTimerMax )
+        spawnPlateTimer -= Time.deltaTime;
+        if(spawnPlateTimer <= 0f)
         {
-            spawnPlateTimer = 0;
-            if(platesSpawnedAmount < spawnPlateTimerMax )
+            spawnPlateTimer = spawnPlateTimerMax;
+            if(platesSpawnedAmount < platesSpawnedAmountMax)
             {
                 platesSpawnedAmount++;
                 OnPlateSpawned?.Invoke(this, EventArgs.Empty);

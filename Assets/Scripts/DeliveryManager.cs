@@ -1,16 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour
 {
+    public event EventHandler OnRecipeSpawned;
+    public event EventHandler OnRecipeCompleted;
     public static DeliveryManager Instance { get; private set; }
 
     [SerializeField] RecipeListSO recipeListSO;
 
     private List<RecipeSO> waitingRecipeSOList;
     private float spawnRecipeTimer;
-    private float spawnRecipeTimerMax = 4f;
+    private float spawnRecipeTimerMax = 15f;
     private int waitingRecipesMax = 4;
 
     private void Awake()
@@ -28,9 +31,10 @@ public class DeliveryManager : MonoBehaviour
 
             if (waitingRecipeSOList.Count < waitingRecipesMax)
             {
-                RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[Random.Range(0, recipeListSO.recipeSOList.Count)];
+                RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count)];
                 Debug.Log(waitingRecipeSO.recipeName);
                 waitingRecipeSOList.Add(waitingRecipeSO);
+                OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
             }
         }
     }
@@ -49,6 +53,7 @@ public class DeliveryManager : MonoBehaviour
                 {
                     // Intersect of two list have the same length with them
                     waitingRecipeSOList.RemoveAt(i);
+                    OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
                     found = true;
                     break;
                 }
@@ -59,5 +64,10 @@ public class DeliveryManager : MonoBehaviour
             Debug.Log("correct recipe!");
         else
             Debug.Log("wrong recipe!");
+    }
+
+    public List<RecipeSO> GetWaitingRecipeSOList()
+    {
+        return waitingRecipeSOList;
     }
 }
