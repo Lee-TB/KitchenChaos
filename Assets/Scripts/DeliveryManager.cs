@@ -37,6 +37,7 @@ public class DeliveryManager : MonoBehaviour
 
     public void DeliveryRecipe(PlateKitchenObject plateKitchenObject)
     {
+        bool found = false;
         for (int i = 0; i < waitingRecipeSOList.Count; i++)
         {
             var recipeKitchenObjectSOList = waitingRecipeSOList[i].kitchenObjectSOList;
@@ -44,18 +45,19 @@ public class DeliveryManager : MonoBehaviour
 
             if (recipeKitchenObjectSOList.Count == plateKitchenObjectSOList.Count)
             {
-                // Have the same numbers of ingredients
-                var intersect = recipeKitchenObjectSOList.Intersect(plateKitchenObjectSOList);
-                if (intersect.Count() == recipeKitchenObjectSOList.Count)
+                if (recipeKitchenObjectSOList.All(plateKitchenObjectSOList.Contains))
                 {
                     // Intersect of two list have the same length with them
-                    Debug.Log("correct recipe!");
                     waitingRecipeSOList.RemoveAt(i);
+                    found = true;
                     break;
                 }
             }
         }
 
-        Debug.Log("wrong recipe");
+        if (found)
+            Debug.Log("correct recipe!");
+        else
+            Debug.Log("wrong recipe!");
     }
 }
