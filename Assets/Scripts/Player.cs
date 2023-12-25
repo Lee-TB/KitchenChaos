@@ -6,6 +6,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public static Player Instance { get; private set; }
 
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public event EventHandler OnPickedSomething;
+
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         public BaseCounter selectedCounter;
@@ -27,7 +29,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void Awake()
     {
-        if(Instance != null)
+        if (Instance != null)
         {
             Debug.LogError("Threre more than one Player instance");
         }
@@ -50,7 +52,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
     {
-        if(selectedCounter is not null)
+        if (selectedCounter is not null)
         {
             selectedCounter.Interact(this);
         }
@@ -113,28 +115,30 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
-        
+
         if (moveDirection != Vector3.zero)
         {
             _lastInteractDir = moveDirection;
         }
 
         float interactDistance = 2f;
-        if(Physics.Raycast(transform.position, _lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask))
+        if (Physics.Raycast(transform.position, _lastInteractDir, out RaycastHit raycastHit, interactDistance, counterLayerMask))
         {
-            if(raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
+            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
                 // has baseCounter
                 if (selectedCounter != baseCounter)
                 {
                     SetSelectedCounter(baseCounter);
                 }
-            } else
+            }
+            else
             {
                 // when cannot get baseCounter
                 SetSelectedCounter(null);
             }
-        } else
+        }
+        else
         {
             // when player not hit anycounter
             SetSelectedCounter(null);
@@ -158,6 +162,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;
+
+        if (kitchenObject != null)
+        {
+            OnPickedSomething?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject() { return kitchenObject; }

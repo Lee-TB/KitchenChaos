@@ -5,8 +5,9 @@ public class CuttingCounter : BaseCounter, IHasProgress
     [SerializeField] protected CuttingRecipySO[] cuttingRecipySOArray;
 
     public event EventHandler OnCut;
+    public static event EventHandler OnAnyCut;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
-     
+
     private int cuttingProgress;
 
     public override void Interact(Player player)
@@ -80,6 +81,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 progressNormalized = (float)cuttingProgress / cuttingRecipySO.cuttingProgressMax
             });
             OnCut?.Invoke(this, EventArgs.Empty);
+            OnAnyCut?.Invoke(this, EventArgs.Empty);
 
             if (cuttingProgress >= cuttingRecipySO?.cuttingProgressMax)
             {

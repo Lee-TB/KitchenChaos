@@ -7,6 +7,8 @@ public class DeliveryManager : MonoBehaviour
 {
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
+    public event EventHandler OnRecipeSuccess;
+    public event EventHandler OnRecipeFailed;
     public static DeliveryManager Instance { get; private set; }
 
     [SerializeField] RecipeListSO recipeListSO;
@@ -61,9 +63,9 @@ public class DeliveryManager : MonoBehaviour
         }
 
         if (found)
-            Debug.Log("correct recipe!");
+            OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
         else
-            Debug.Log("wrong recipe!");
+            OnRecipeFailed?.Invoke(this, EventArgs.Empty);
     }
 
     public List<RecipeSO> GetWaitingRecipeSOList()
