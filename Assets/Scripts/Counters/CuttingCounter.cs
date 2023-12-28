@@ -4,8 +4,14 @@ public class CuttingCounter : BaseCounter, IHasProgress
 {
     [SerializeField] protected CuttingRecipySO[] cuttingRecipySOArray;
 
-    public event EventHandler OnCut;
     public static event EventHandler OnAnyCut;
+
+    new public static void ResetStaticData()
+    {
+        OnAnyCut = null;
+    }
+
+    public event EventHandler OnCut;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
 
     private int cuttingProgress;

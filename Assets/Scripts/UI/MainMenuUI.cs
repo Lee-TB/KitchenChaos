@@ -16,5 +16,7 @@ public class MainMenuUI : MonoBehaviour
         quitButton.onClick.AddListener(() => {
             Application.Quit();
         });
+
+        Time.timeScale = 1.0f; // Make sure game run in normal speed;
     }
 }
