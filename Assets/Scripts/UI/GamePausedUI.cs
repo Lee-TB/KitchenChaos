@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class GamePausedUI : MonoBehaviour
 {
     [SerializeField] private Button resumeButton;
+    [SerializeField] private Button optionsButton;
     [SerializeField] private Button mainMenuButton;
 
     private void Awake()
@@ -11,6 +12,11 @@ public class GamePausedUI : MonoBehaviour
         resumeButton.onClick.AddListener(() =>
         {
             KitchenGameManager.Instance.ResumeGame();
+        });
+
+        optionsButton.onClick.AddListener(() =>
+        {
+            OptionsUI.Instance.Show();
         });
 
         mainMenuButton.onClick.AddListener(() =>

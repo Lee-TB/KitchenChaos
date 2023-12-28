@@ -1,17 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    private const string PLAYER_PREFS_SOUND_EFFECTS_VOLUME = "SoundEffectsVolume";
+
     public static SoundManager Instance { get; private set; }
 
 
     [SerializeField] AudioClipRefsSO audioClipRefsSO;
 
+    private float volume;
+
     private void Awake()
     {
         Instance = this;
+
+        volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, .5f);
     }
 
     private void Start()
@@ -26,17 +30,17 @@ public class SoundManager : MonoBehaviour
 
     private void TrashCounter_OnAnyObjectTrashed(object sender, System.EventArgs e)
     {
-        PlaySound(audioClipRefsSO.trash, Camera.main.transform.position, 0.5f);
+        PlaySound(audioClipRefsSO.trash, Camera.main.transform.position);
     }
 
     private void BaseCounter_OnAnyObjectPlacedHere(object sender, System.EventArgs e)
     {
-        PlaySound(audioClipRefsSO.objectDrop, Camera.main.transform.position, 0.5f);
+        PlaySound(audioClipRefsSO.objectDrop, Camera.main.transform.position);
     }
 
     private void Player_OnPickedSomething(object sender, System.EventArgs e)
     {
-        PlaySound(audioClipRefsSO.objectPickup, Camera.main.transform.position, 0.5f);
+        PlaySound(audioClipRefsSO.objectPickup, Camera.main.transform.position);
         //PlaySound(audioClipRefsSO.objectPickup, Player.Instance.transform.position, 0.5f);
 
     }
@@ -45,31 +49,47 @@ public class SoundManager : MonoBehaviour
     {
         //CuttingCounter cuttingCounter = sender as CuttingCounter;
         //PlaySound(audioClipRefsSO.chop, cuttingCounter.transform.position, 5f);
-        PlaySound(audioClipRefsSO.chop, Camera.main.transform.position, 0.5f);
+        PlaySound(audioClipRefsSO.chop, Camera.main.transform.position);
     }
 
     private void DeliveryManager_OnRecipeSuccess(object sender, System.EventArgs e)
     {
-        PlaySound(audioClipRefsSO.deliverySuccess, Camera.main.transform.position, 0.5f);
+        PlaySound(audioClipRefsSO.deliverySuccess, Camera.main.transform.position);
     }
 
     private void DeliveryManager_OnRecipeFailed(object sender, System.EventArgs e)
     {
-        PlaySound(audioClipRefsSO.deliveryFail, Camera.main.transform.position, 0.5f);
+        PlaySound(audioClipRefsSO.deliveryFail, Camera.main.transform.position);
     }
 
     private void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volume = 1f)
     {
-        PlaySound(audioClipArray[Random.Range(0, audioClipArray.Length)], position, volume);
+        PlaySound(audioClipArray[Random.Range(0, audioClipArray.Length)], position, volume * this.volume);
     }
 
     private void PlaySound(AudioClip audioClip, Vector3 position, float volume = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClip, position, volume);
+        AudioSource.PlayClipAtPoint(audioClip, position, volume * this.volume);
     }
 
     public void PlayFootstepsSound(Vector3 position, float volume = 1f)
     {
         PlaySound(audioClipRefsSO.footstep, position, volume);
+    }
+
+    public void ChangeVolume()
+    {
+        volume += .1f;
+        if (volume > 1.01f)
+        {
+            volume = 0f;
+        }
+        PlayerPrefs.SetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, volume);
+        PlayerPrefs.Save();
+    }
+
+    public float GetVolume()
+    {
+        return volume;
     }
 }
