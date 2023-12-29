@@ -77,10 +77,21 @@ public class SoundManager : MonoBehaviour
         PlaySound(audioClipRefsSO.footstep, position, volume);
     }
 
-    public void ChangeVolume()
+    public void IncreaseVolume()
     {
         volume += .1f;
-        if (volume > 1.01f)
+        if (volume > 1f)
+        {
+            volume = 1f;
+        }
+        PlayerPrefs.SetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, volume);
+        PlayerPrefs.Save();
+    }
+
+    public void DecreaseVolume()
+    {
+        volume -= .1f;
+        if (volume < 0f)
         {
             volume = 0f;
         }

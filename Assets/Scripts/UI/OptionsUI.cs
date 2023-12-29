@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,11 +7,15 @@ public class OptionsUI : MonoBehaviour
 {
     public static OptionsUI Instance { get; private set; }
 
-    [SerializeField] private Button soundEffectsButton;
-    [SerializeField] private Button musicButton;
-    [SerializeField] private Button backButton;
+    [SerializeField] private Button IncreaseSoundEffectsButton;
+    [SerializeField] private Button DecreaseSoundEffectsButton;
     [SerializeField] private TextMeshProUGUI soundEffectsText;
+
+    [SerializeField] private Button IncreaseMusicButton;
+    [SerializeField] private Button DecreaseMusicButton;
     [SerializeField] private TextMeshProUGUI musicText;
+
+    [SerializeField] private Button backButton;
 
     [SerializeField] private Button moveUpButton;
     [SerializeField] private Button moveDownButton;
@@ -31,25 +36,40 @@ public class OptionsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pressToRebindText;
 
 
+    private Action onBackAction;
+
     private void Awake()
     {
         Instance = this;
 
-        soundEffectsButton.onClick.AddListener(() =>
+        IncreaseSoundEffectsButton.onClick.AddListener(() =>
         {
-            SoundManager.Instance.ChangeVolume();
+            SoundManager.Instance.IncreaseVolume();
             UpdateVisual();
         });
 
-        musicButton.onClick.AddListener(() =>
+        DecreaseSoundEffectsButton.onClick.AddListener(() =>
         {
-            MusicManager.Instance.ChangeVolume();
+            SoundManager.Instance.DecreaseVolume();
+            UpdateVisual();
+        });
+
+        IncreaseMusicButton.onClick.AddListener(() =>
+        {
+            MusicManager.Instance.IncreaseVolume();
+            UpdateVisual();
+        });
+
+        DecreaseMusicButton.onClick.AddListener(() =>
+        {
+            MusicManager.Instance.DecreaseVolume();
             UpdateVisual();
         });
 
         backButton.onClick.AddListener(() =>
         {
             Hide();
+            onBackAction();
         });
 
         moveUpButton.onClick.AddListener(() => RebindBinding(GameInput.Binding.Move_Up));
@@ -76,8 +96,8 @@ public class OptionsUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        soundEffectsText.text = "Sound Effects: " + Mathf.Round(SoundManager.Instance.GetVolume() * 100f).ToString() + "%";
-        musicText.text = "Music: " + Mathf.Round(MusicManager.Instance.GetVolume() * 100f).ToString() + "%";
+        soundEffectsText.text = Mathf.Round(SoundManager.Instance.GetVolume() * 100f).ToString() + "%";
+        musicText.text = Mathf.Round(MusicManager.Instance.GetVolume() * 100f).ToString() + "%";
 
         moveUpText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Move_Up);
         moveDownText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Move_Down);
@@ -88,8 +108,9 @@ public class OptionsUI : MonoBehaviour
         pauseText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Pause);
     }
 
-    public void Show()
+    public void Show(Action onBackAction)
     {
+        this.onBackAction = onBackAction;
         gameObject.SetActive(true);
     }
 
