@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DeliveryManagerUI : MonoBehaviour
@@ -15,6 +16,16 @@ public class DeliveryManagerUI : MonoBehaviour
         DeliveryManager.Instance.OnRecipeSpawned += DeliveryManager_OnRecipeSpawned;
         DeliveryManager.Instance.OnRecipeCompleted += DeliveryManager_OnRecipeCompleted;
         UpdateVisual();
+        KitchenGameManager.Instance.OnStateChanged += KitchenGameManager_OnStateChanged;        
+        Hide();
+    }
+
+    private void KitchenGameManager_OnStateChanged(object sender, EventArgs e)
+    {
+        if (KitchenGameManager.Instance.IsGamePlaying())
+        {
+            Show();
+        }
     }
 
     private void DeliveryManager_OnRecipeSpawned(object sender, System.EventArgs e)
@@ -41,5 +52,16 @@ public class DeliveryManagerUI : MonoBehaviour
             recipeTransform.gameObject.SetActive(true);
             recipeTransform.GetComponent<DeliveryManagerSingleUI>().SetRecipeSO(waitingRecipeSO);
         }
+    }
+
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }
