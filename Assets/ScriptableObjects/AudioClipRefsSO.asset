@@ -42,3 +42,4 @@ MonoBehaviour:
   warning:
   - {fileID: 8300000, guid: b90d8099bdbf09a40ab1163556d5b5f4, type: 3}
   - {fileID: 8300000, guid: b59c98e0066c41f42b8100f5cb180f5b, type: 3}
+  go: {fileID: 8300000, guid: 2839621a98d47c144a68bd9bc05db31f, type: 3}
