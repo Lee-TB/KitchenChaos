@@ -3,7 +3,18 @@ using UnityEngine;
 
 public class GameStartCountdownUI : MonoBehaviour
 {
+    private const string NUMBER_POPUP = "NumberPopup";
+
     [SerializeField] private TextMeshProUGUI countdownText;
+
+    private Animator animator;
+    private int prevCountDownNumber;
+    private float delayToHide;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Start()
     {
@@ -17,15 +28,40 @@ public class GameStartCountdownUI : MonoBehaviour
         {
             Show();
         }
-        else
+        else if (KitchenGameManager.Instance.IsGamePlaying())
         {
-            Hide();
+            delayToHide = 1f;
         }
     }
 
     private void Update()
     {
-        countdownText.text = Mathf.Ceil(KitchenGameManager.Instance.GetCountdownToStartTimer()).ToString();
+        if (KitchenGameManager.Instance.IsGamePlaying())
+        {
+            delayToHide -= Time.deltaTime;
+            if (delayToHide < 0f)
+            {
+                Hide();
+            }
+        }
+
+        int countDownNumber = Mathf.CeilToInt(KitchenGameManager.Instance.GetCountdownToStartTimer());
+
+        countdownText.text = countDownNumber == 0f ? "Go!" : countDownNumber.ToString();
+
+        if (countDownNumber != prevCountDownNumber)
+        {
+            prevCountDownNumber = countDownNumber;
+            animator.SetTrigger(NUMBER_POPUP);
+            if (countDownNumber >= 1)
+            {
+                SoundManager.Instance.PlayCountdownSound(Camera.main.transform.position);
+            }
+            else
+            {
+                SoundManager.Instance.PlayGoSound(Camera.main.transform.position);
+            }
+        }
     }
 
     private void Show()

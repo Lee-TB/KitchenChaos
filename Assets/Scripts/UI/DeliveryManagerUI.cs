@@ -16,7 +16,7 @@ public class DeliveryManagerUI : MonoBehaviour
         DeliveryManager.Instance.OnRecipeSpawned += DeliveryManager_OnRecipeSpawned;
         DeliveryManager.Instance.OnRecipeCompleted += DeliveryManager_OnRecipeCompleted;
         UpdateVisual();
-        KitchenGameManager.Instance.OnStateChanged += KitchenGameManager_OnStateChanged;        
+        KitchenGameManager.Instance.OnStateChanged += KitchenGameManager_OnStateChanged;
         Hide();
     }
 

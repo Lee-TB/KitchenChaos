@@ -77,6 +77,16 @@ public class SoundManager : MonoBehaviour
         PlaySound(audioClipRefsSO.footstep, position, volume);
     }
 
+    public void PlayCountdownSound(Vector3 position, float volume = 1f)
+    {
+        PlaySound(audioClipRefsSO.warning, position, volume);
+    }
+
+    public void PlayGoSound(Vector3 position, float volume = 1f)
+    {
+        PlaySound(audioClipRefsSO.go, position, volume);
+    }
+
     public void IncreaseVolume()
     {
         volume += .1f;
@@ -84,6 +94,7 @@ public class SoundManager : MonoBehaviour
         {
             volume = 1f;
         }
+        PlaySound(audioClipRefsSO.warning[0], Camera.main.transform.position, volume);
         PlayerPrefs.SetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, volume);
         PlayerPrefs.Save();
     }
@@ -95,6 +106,7 @@ public class SoundManager : MonoBehaviour
         {
             volume = 0f;
         }
+        PlaySound(audioClipRefsSO.warning[0], Camera.main.transform.position, volume);
         PlayerPrefs.SetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, volume);
         PlayerPrefs.Save();
     }
