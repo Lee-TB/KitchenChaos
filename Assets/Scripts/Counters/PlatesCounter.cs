@@ -12,18 +12,16 @@ public class PlatesCounter : BaseCounter
     private float spawnPlateTimerMax = 4f;
     private int platesSpawnedAmount = 4;
     private int platesSpawnedAmountMax = 4;
-
-    private void Start()
-    {
-        // spawn 4 plate when start
-        for (int i = 0; i < platesSpawnedAmount; i++)
-        {
-            OnPlateSpawned?.Invoke(this, EventArgs.Empty);
-        }
-    }
+    bool firstUpdate = true;   
 
     private void Update()
     {
+        if(firstUpdate)
+        {
+            firstUpdate = false;
+            SpawnFullPlates();
+        }
+
         if (spawnPlateTimer <= 0f)
         {
             spawnPlateTimer = spawnPlateTimerMax;
@@ -48,6 +46,14 @@ public class PlatesCounter : BaseCounter
 
                 OnPlateRemoved?.Invoke(this, EventArgs.Empty);
             }
+        }
+    }
+
+    private void SpawnFullPlates()
+    {
+        for (int i = 0; i < platesSpawnedAmount; i++)
+        {
+            OnPlateSpawned?.Invoke(this, EventArgs.Empty);
         }
     }
 }
