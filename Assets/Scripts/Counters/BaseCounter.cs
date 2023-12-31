@@ -16,14 +16,14 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
     private KitchenObject kitchenObject;
 
     public virtual void Interact(Player player)
-    {
-        Debug.LogError("BaseCounter.Interact();");
+    {        
+        Debug.LogWarning("This class hasn't overriden BaseCounter.Interact() method.");
     }
 
     public virtual void InteractAlternate(Player player)
     {
         ;
-        Debug.LogError("BaseCounter.InteractAlternate();");
+        Debug.LogWarning("This class hasn't overriden BaseCounter.InteractAlternate() method.");
     }
 
     public Transform GetKitchenObjectFollowTransform()

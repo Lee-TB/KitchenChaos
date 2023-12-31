@@ -13,9 +13,8 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
         volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, .5f);
+        Instance = this;
     }
 
     private void Start()
@@ -107,7 +106,7 @@ public class SoundManager : MonoBehaviour
         {
             volume = 1f;
         }
-        PlaySound(audioClipRefsSO.warning[0], Camera.main.transform.position, volume);
+        PlaySound(audioClipRefsSO.warning[0], Camera.main.transform.position);
         PlayerPrefs.SetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, volume);
         PlayerPrefs.Save();
     }
@@ -119,7 +118,7 @@ public class SoundManager : MonoBehaviour
         {
             volume = 0f;
         }
-        PlaySound(audioClipRefsSO.warning[0], Camera.main.transform.position, volume);
+        PlaySound(audioClipRefsSO.warning[0], Camera.main.transform.position);
         PlayerPrefs.SetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, volume);
         PlayerPrefs.Save();
     }
