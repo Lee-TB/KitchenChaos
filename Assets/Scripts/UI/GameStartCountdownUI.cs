@@ -55,7 +55,7 @@ public class GameStartCountdownUI : MonoBehaviour
             animator.SetTrigger(NUMBER_POPUP);
             if (countDownNumber >= 1)
             {
-                SoundManager.Instance.PlayCountdownSound(Camera.main.transform.position);
+                SoundManager.Instance.PlayCountdownSound(Camera.main.transform.position, 0.7f);
             }
             else
             {
