@@ -26,6 +26,12 @@ public class SoundManager : MonoBehaviour
         CuttingCounter.OnAnyCut += CuttingCounter_OnAnyCut;
         BaseCounter.OnAnyObjectPlacedHere += BaseCounter_OnAnyObjectPlacedHere;
         TrashCounter.OnAnyObjectTrashed += TrashCounter_OnAnyObjectTrashed;
+        PlateKitchenObject.OnIngredientAddedInAnyPlate += PlateKitchenObject_OnIngredientAddedInAnyPlate;
+    }
+
+    private void PlateKitchenObject_OnIngredientAddedInAnyPlate(object sender, System.EventArgs e)
+    {
+        PlaySound(audioClipRefsSO.objectPickup, Camera.main.transform.position);
     }
 
     private void TrashCounter_OnAnyObjectTrashed(object sender, System.EventArgs e)

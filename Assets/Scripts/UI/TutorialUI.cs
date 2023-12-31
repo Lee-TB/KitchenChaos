@@ -1,7 +1,5 @@
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
-using static UnityEngine.CullingGroup;
 
 public class TutorialUI : MonoBehaviour
 {
